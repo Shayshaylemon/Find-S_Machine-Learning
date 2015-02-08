@@ -2,11 +2,10 @@
 This program is developed to determine whether the risk of defaulting on a loan is "high" or "low" based on a set of binary attributes using Find-S algorithm. 
 
 Find-S algo:
-1. Initialize h to the most specific hypothesis in H
-2. For each positive training instance x
-   - For each attribute constraint ai in h: If the constraint ai is satisfied by x, then do nothing
-     else replace ai in h by the next more general constraint that is satisfied by x
-3. Output hypothesis h
+• Initialize h to the most specific hypothesis in H
+• For each positive training instance x
+   - For each attribute constraint ai in h: If the constraint ai is satisfied by x, then do nothing; else replace ai in h by the next more general constraint that is satisfied by x
+• Output hypothesis h
 
 Attributes are: 
 • Gender (Male, Female)
