@@ -1,0 +1,171 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Scanner;
+
+public class partA {
+	
+	public static void main(String[] args) throws IOException {
+		
+		String[] finalAsmp = new String[9];
+		
+		printlines();
+		
+		printC();
+		
+		printH();
+		
+		printHYP("9Cat-Train.labeled", finalAsmp);
+		
+		printRate("9Cat-Dev.labeled", finalAsmp);
+		
+		printInput(args[0], finalAsmp);
+		
+	}
+	
+	public static void printlines() {
+		
+		System.out.println((int)Math.pow(2, 9));
+		
+	}
+	
+	public static void printC() {
+		int x = (int) Math.pow(2, 9);
+		BigInteger c = BigInteger.valueOf(2).pow(x);
+		
+		System.out.println(c.toString().length());
+	}
+	
+	public static void printH() {
+		Integer x =  (int) Math.pow(3, 9) + 1;
+		
+		System.out.println(x);
+	}
+	
+	public static void printHYP(String path, String[] finalAsmp) throws IOException {
+		
+		int counter = 0;
+		String[] start = new String[10];
+		String[] temparray = new String[10];
+		Scanner file = null;
+		FileWriter fout = null;
+		
+		try {
+			fout = new FileWriter("partA4.txt");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			file = new Scanner(new File(path));
+    	}
+    	catch (FileNotFoundException f) {
+    	    System.out.println("Sorry, couldn't find that file.");
+    	    System.exit(0);
+    	}
+		
+		for(int i = 0; i < 10; i++) {
+			file.next();
+			start[i] = file.next();
+		}
+		
+		counter++;
+			
+		while(file.hasNext()) {
+			
+			for(int j = 0; j < 10; j++) {
+				file.next();
+				temparray[j] = file.next();
+			}
+			
+			counter++;
+
+			for(int k = 0; k < 9; k++) {
+				if(temparray[9].equals("high")) {
+					if(temparray[k] != null && !temparray[k].equals(start[k])) {
+						start[k] = "?";
+					}
+				}
+			}
+			
+			if(counter % 30 == 0) {
+				for(int i = 0; i < 9; i++) {
+					fout.write(start[i]);
+					if(i != 8) {
+						fout.write("\t");
+					}
+				}
+				fout.append(System.getProperty("line.separator"));
+			}
+		}
+		fout.close();
+		
+		for(int f = 0; f < 9; f++) {
+			finalAsmp[f] = start[f];
+		}
+		
+	} 
+	
+
+	public static void printRate(String path, String[] finalAsmp) {
+
+		double nume = 0, dom = 0;
+		String[] arraytemp = new String[10];
+		Scanner filedev = null;
+		
+		try {
+			filedev = new Scanner(new File(path));
+    	}
+    	catch (FileNotFoundException f) {
+    	    System.out.println("Sorry, couldn't find that file.");
+    	    System.exit(0);
+    	}
+		
+		while(filedev.hasNext()) {
+			dom++;
+			for(int j = 0; j < 10; j++) {
+				filedev.next();
+				arraytemp[j] = filedev.next();
+			}
+
+			for(int k = 0; k < 9; k++) {
+				if(!finalAsmp[k].equals("?")){
+					if((!finalAsmp[k].equals(arraytemp[k]) && !arraytemp[9].equals("low")) || (finalAsmp[k].equals(arraytemp[k]) && !arraytemp[9].equals("high"))) {
+						nume++; break;
+					}
+				}
+			}
+		}
+		
+		System.out.println(nume/dom);
+
+	}
+	
+	public static void printInput(String path, String[] finalAsmp) throws FileNotFoundException{
+		String[] inputarray = new String[10];
+		Scanner fileInput = null;
+		fileInput = new Scanner(new File(path));
+
+		while(fileInput.hasNext()) {
+			int k;
+			for(int i = 0; i < 10; i++) {
+				fileInput.next();
+				inputarray[i] = fileInput.next();
+			}
+			
+			for(k = 0; k < 9; k++) {
+				if((!finalAsmp[k].equals("?"))) {
+					if(!inputarray[k].equals(null) && !finalAsmp[k].equals(inputarray[k])) {
+						System.out.println("low");
+						break;
+					}
+				}
+			}
+			if(k == 9) {
+				System.out.println("high");
+			}
+		}
+	}
+}
